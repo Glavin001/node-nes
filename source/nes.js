@@ -42,6 +42,8 @@ var JSNES = function(opts) {
     
     this.frameTime = 1000 / this.opts.preferredFrameRate;
     
+    console.log(this.opts);
+
     this.ui = new this.opts.ui(this);
     this.cpu = new JSNES.CPU(this);
     this.ppu = new JSNES.PPU(this);
@@ -236,3 +238,13 @@ JSNES.prototype = {
         this.ppu.fromJSON(s.ppu);
     }
 };
+
+// Dependencies
+console.log(JSNES);
+require('./ui.js')(JSNES);
+require('./cpu.js')(JSNES);
+require('./ppu.js')(JSNES);
+require('./papu.js')(JSNES);
+require('./keyboard.js')(JSNES);
+
+module.exports = JSNES;
