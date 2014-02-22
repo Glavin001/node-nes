@@ -16,6 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+var fs = require('fs');
+var Canvas = require('canvas');
+
 module.exports = function(JSNES) {
 
     JSNES.DummyUI = function(nes) {
@@ -24,6 +27,66 @@ module.exports = function(JSNES) {
         this.updateStatus = function() {};
         this.writeAudio = function() {};
         this.writeFrame = function() {};
+    };
+
+    JSNES.NodeUI = function(nes) {
+        var self = this;
+        self.nes = nes;
+        self.screen = [new Canvas(256, 240)];
+        self.enable = function() {
+            console.log('enable');
+        };
+        self.updateStatus = function(status) {
+            console.log('status', status);
+        };
+        self.writeAudio = function(samples) {
+            console.log('writeAudio');
+        };
+        self.writeFrame = function(buffer, prevBuffer) {
+            //console.log('writeFrame');
+            //console.log(buffer, prevBuffer);
+            var imageData = this.canvasImageData.data;
+            var pixel, i, j;
+
+            for (i=0; i<256*240; i++) {
+                pixel = buffer[i];
+
+                if (pixel != prevBuffer[i]) {
+                    j = i*4;
+                    imageData[j] = pixel & 0xFF;
+                    imageData[j+1] = (pixel >> 8) & 0xFF;
+                    imageData[j+2] = (pixel >> 16) & 0xFF;
+                    prevBuffer[i] = pixel;
+                }
+            }
+
+            this.canvasContext.putImageData(this.canvasImageData, 0, 0);
+        };
+        console.log('Finished NodeUI');
+        
+        /*
+         * Canvas
+         */
+        self.canvasContext = self.screen[0].getContext('2d');
+        
+        if (!self.canvasContext.getImageData) {
+            parent.html("Your browser doesn't support writing pixels directly to the <code>&lt;canvas&gt;</code> tag. Try the latest versions of Google Chrome, Safari, Opera or Firefox!");
+            return;
+        }
+        
+        self.canvasImageData = self.canvasContext.getImageData(0, 0, 256, 240);
+        self.resetCanvas = function() {
+                        this.canvasContext.fillStyle = 'black';
+                        // set alpha to opaque
+                        this.canvasContext.fillRect(0, 0, 256, 240);
+
+                        // Set alpha
+                        for (var i = 3; i < this.canvasImageData.data.length-3; i += 4) {
+                            this.canvasImageData.data[i] = 0xFF;
+                        }
+                    };
+        self.resetCanvas();
+
     };
 
     if (typeof jQuery !== 'undefined') {

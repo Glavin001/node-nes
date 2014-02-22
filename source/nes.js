@@ -18,7 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 var JSNES = function(opts) {
     this.opts = {
-        ui: JSNES.DummyUI,
+        //ui: JSNES.DummyUI,
+        ui: JSNES.NodeUI,
         swfPath: 'lib/',
         
         preferredFrameRate: 60,
@@ -169,6 +170,7 @@ JSNES.prototype = {
     },
     
     stop: function() {
+        console.log('stop', arguments.callee);
         clearInterval(this.frameInterval);
         clearInterval(this.fpsInterval);
         this.isRunning = false;
@@ -240,11 +242,15 @@ JSNES.prototype = {
 };
 
 // Dependencies
-console.log(JSNES);
 require('./ui.js')(JSNES);
 require('./cpu.js')(JSNES);
 require('./ppu.js')(JSNES);
 require('./papu.js')(JSNES);
 require('./keyboard.js')(JSNES);
+require('./rom.js')(JSNES);
+require('./mappers.js')(JSNES);
+require('./utils.js')(JSNES);
 
-module.exports = JSNES;
+module.exports = function() {
+    return new JSNES(arguments);
+};

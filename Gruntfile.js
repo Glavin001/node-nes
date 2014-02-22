@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         },
         watch: {
           scripts: {
-            files: ['source/**/*.js'],
+            files: ['source/**/*.js', 'test/**/*.js'],
             tasks: ['simplemocha'],
             options: {
               spawn: true

@@ -1,10 +1,26 @@
 var assert = require("assert")
+var fs = require('fs');
 
 describe('Loading', function(){
-  describe('#require()', function(){
-    it('should save without error', function(done){
-      var nes = require('../source/nes.js')({});
-      done();
+    it('should require without error', function(done){
+        var JSNES = require('../source/nes.js')({});
+        console.log('jsnes', JSNES);
+
+        var self = JSNES.ui;
+
+        self.updateStatus("Downloading...");
+        fs.readFile('roms/lj65/lj65.nes', {encoding: 'utf8'}, function(err, data) {
+            //console.log(err, data);
+            if (err) { return err; }
+            
+            self.nes.loadRom(data);
+            console.log('Start');
+            self.nes.start();
+            console.log('Enable');
+            self.enable();
+            console.log('Done!');
+            done();
+        });
+
     });
-  });
 });

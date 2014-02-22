@@ -1073,7 +1073,7 @@ module.exports = function(JSNES) {
                     // *******
                     // * ??? *
                     // *******
-
+                    console.log('WRONG', addrMode);
                     this.nes.stop();
                     this.nes.crashMessage = "Game crashed, invalid opcode at address $"+opaddr.toString(16);
                     break;
