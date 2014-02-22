@@ -4,9 +4,20 @@
   "description": "A Node.js NES emulator.",
   "repository": {
     "type": "git",
-    "url": "git://github.com/bfirsh/jsnes.git"
+    "url": "git@github.com:Glavin001/node-nes.git"
   },
+  "contributors": [
+    {
+        "name": "Glavin Wiechert",
+        "email": "glavin.wiechert@gmail.com",
+        "url": "https://github.com/Glavin001"
+    }
+  ],
   "license": "BSD",
+  "scripts": {
+    "test": "grunt test",
+    "start": "grunt"
+  },
   "dependencies": {
     "canvas": "~1.1.3"
   },

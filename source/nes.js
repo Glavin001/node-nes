@@ -43,8 +43,6 @@ var JSNES = function(opts) {
     
     this.frameTime = 1000 / this.opts.preferredFrameRate;
     
-    console.log(this.opts);
-
     this.ui = new this.opts.ui(this);
     this.cpu = new JSNES.CPU(this);
     this.ppu = new JSNES.PPU(this);
@@ -170,7 +168,6 @@ JSNES.prototype = {
     },
     
     stop: function() {
-        console.log('stop', arguments.callee);
         clearInterval(this.frameInterval);
         clearInterval(this.fpsInterval);
         this.isRunning = false;
