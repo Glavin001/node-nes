@@ -20,7 +20,7 @@
     "start": "grunt"
   },
   "dependencies": {
-    "canvas": "~1.1.3"
+    "canvas": "^1.6.6"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
